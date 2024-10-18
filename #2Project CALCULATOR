@@ -1,0 +1,113 @@
+import tkinter as tk
+from tkinter import messagebox
+
+def button_click(char):
+    if is_on.get():  # Only allow input if calculator is on
+        global equation
+        equation += str(char)
+        equation_label.set(equation)
+
+def clear():
+    if is_on.get():  # Only allow clearing if calculator is on
+        global equation
+        equation = ""
+        equation_label.set(equation)
+
+def backspace():
+    if is_on.get():  # Only allow backspace if calculator is on
+        global equation
+        equation = equation[:-1]
+        equation_label.set(equation if equation else "0")
+
+def calculate():
+    if is_on.get():  # Only allow calculation if calculator is on
+        try:
+            global equation
+            equation = equation.replace('×', '*').replace('÷', '/')
+            result = str(eval(equation))
+            equation = result
+            equation_label.set(equation)
+        except Exception:
+            equation_label.set("Error")
+            equation = ""
+
+def toggle_on_off():
+    if is_on.get():
+        is_on.set(False)
+        equation_label.set("OFF")  # Display OFF when turned off
+    else:
+        is_on.set(True)
+        clear()  # Clear display when turned back on
+
+# Create the main window
+window = tk.Tk()
+window.title("Calculator")
+window.geometry("400x600")
+window.config(bg="#f0f8ff")
+
+equation = ""
+is_on = tk.BooleanVar(value=True)  # Variable to track calculator state
+equation_label = tk.StringVar(value="0")
+
+# Display
+display = tk.Entry(window, textvariable=equation_label, width=15, font=("Arial", 30), borderwidth=5, justify="right", state="readonly", bg="#e0f7fa")
+display.grid(row=0, column=0, columnspan=4, padx=10, pady=10)
+
+# Button design
+button_style = {
+    'width': 5,
+    'height': 2,
+    'font': ("Arial", 18),
+    'activebackground': "#b2ebf2",
+    'relief': 'raised'
+}
+
+# Buttons layout
+button_list = [
+    ["ON/OFF", "C", "←", "÷"],
+    ["7", "8", "9", "×"],
+    ["4", "5", "6", "-"],
+    ["1", "2", "3", "+"],
+    ["0", ".", "√", "="],
+    ["1/x", "x²"]
+]
+
+row = 1
+for button_row in button_list:
+    col = 0
+    for button_text in button_row:
+        button_args = {**button_style}  # Copy button_style to avoid conflicts
+        button_args['text'] = button_text
+
+        # Define button commands and colors
+        if button_text == "ON/OFF":
+            button_args['command'] = toggle_on_off
+            button_args['bg'] = "#ff3d00"
+            button_args['fg'] = "white"
+        elif button_text == "=":
+            button_args['command'] = calculate
+            button_args['bg'] = "#4caf50"
+            button_args['fg'] = "white"
+        elif button_text == "C":
+            button_args['command'] = clear
+            button_args['bg'] = "#f44336"
+            button_args['fg'] = "white"
+        elif button_text == "←":
+            button_args['command'] = backspace
+            button_args['bg'] = "#ffa000"
+            button_args['fg'] = "white"
+        else:
+            button_args['command'] = lambda text=button_text: button_click(text)
+            button_args['bg'] = "#f0f0f0"
+            button_args['fg'] = "#333"
+
+        button = tk.Button(window, **button_args)
+        button.grid(row=row, column=col, padx=5, pady=5)
+        col += 1
+    row += 1
+
+# Footer label
+footer_label = tk.Label(window, text="Simple Calculator", font=("Arial", 10), bg="#f0f8ff", fg="#333333")
+footer_label.grid(row=row, column=0, columnspan=4, pady=15)
+
+window.mainloop()

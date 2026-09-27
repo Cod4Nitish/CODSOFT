@@ -1,4 +1,9 @@
-# CodSoft Python GUI Exercises
+<div align="center">
+  <h1>CodSoft Python GUI Exercises</h1>
+  <p>Four beginner desktop utilities built during a hands-on Python practice period</p>
+  <img src="https://img.shields.io/badge/status-archived-6B7280?style=flat-square" alt="Status: archived" />
+  <img src="https://img.shields.io/badge/stack-Python%20%7C%20Tkinter-3776AB?style=flat-square" alt="Python Tkinter" />
+</div>
 
 > [!NOTE]
 > **Archived learning project.** These are preserved Tkinter exercises from a CodSoft practice period. They are kept as early Python work and are not part of the active portfolio.
